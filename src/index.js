@@ -17,7 +17,10 @@ const onSearchFormSubmit = async event => {
     event.preventDefault();
     // console.log('hello');
     pixabayApi.page = 1;
-    pixabayApi.searchQuery = event.target.elements.searchQuery.value;
+  pixabayApi.searchQuery = event.target.elements.searchQuery.value;
+  
+  console.log(pixabayApi.per_page);
+  
     // console.log(event.target.elements.searchQuery.value);
   
   // async/await---------------//------------------------------------------
@@ -31,7 +34,8 @@ const onSearchFormSubmit = async event => {
           loadMoreBtnEl.classList.add('is-hidden');
         return
         }
-        if (Number(data.totalHits) > 40) {
+    if (Number(data.totalHits) >  pixabayApi.per_page) {
+          // console.log(per_page);
             // для перевірки => rw(5 totalHits)
          loadMoreBtnEl.classList.remove('is-hidden');       
         }
@@ -103,7 +107,7 @@ const onLoadMoreBtnClick = async event => {
     galleryEl.insertAdjacentHTML('beforeend', renderGallery(data.hits).join(''));
     lightbox.refresh();
     //  для перевірки => ns(92 totalHits)
-    if (Math.ceil(data.totalHits/40)  === pixabayApi.page) {
+    if (Math.ceil(data.totalHits/pixabayApi.per_page)  === pixabayApi.page) {
      loadMoreBtnEl.classList.add('is-hidden');
      Notiflix.Notify.warning(
       "We're sorry, but you've reached the end of search results.") 

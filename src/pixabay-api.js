@@ -6,11 +6,12 @@ export class PixabayApi {
     constructor() {
         this.page = null;
         this.searchQuery = null;
+        this.per_page = 40;
     }
     fetchPhotos() {
-        return axios.get(`https://pixabay.com/api/?key=${this.#API_KEY}&q=${this.searchQuery}&image_type=photo&orientation=horizontal&safesearch=true&per_page=40&page=${this.page}`);
+        return axios.get(`https://pixabay.com/api/?key=${this.#API_KEY}&q=${this.searchQuery}&image_type=photo&orientation=horizontal&safesearch=true&per_page=${this.per_page}&page=${this.page}`);
         
-        // return fetch(`https://pixabay.com/api/?key=${this.#API_KEY}&q=${this.searchQuery}&image_type=photo&orientation=horizontal&safesearch=true&per_page=40&page=${this.page}`).then(response => {
+        // return fetch(`https://pixabay.com/api/?key=${this.#API_KEY}&q=${this.searchQuery}&image_type=photo&orientation=horizontal&safesearch=true&per_page=${this.per_page}&page=${this.page}`).then(response => {
         //     if (!response.ok) {
         //         throw new Error(response.status);
         //     }
