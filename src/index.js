@@ -90,7 +90,7 @@ function renderGallery(array) {
         </div>`
   );
 }
-onLoadMoreBtnClick = async event => {
+const onLoadMoreBtnClick = async event => {
     // console.log('hello');
   pixabayApi.page += 1;
 
