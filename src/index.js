@@ -1,5 +1,8 @@
 import './css/styles.css';
 import { PixabayApi } from './pixabay-api'
+import Notiflix from 'notiflix';
+import SimpleLightbox from 'simplelightbox';
+import 'simplelightbox/dist/simple-lightbox.min.css';
 
 const searchFormEl = document.querySelector('.search-form');
 const galleryEl = document.querySelector('#gallery');
@@ -19,10 +22,16 @@ const onSearchFormSubmit = event => {
 
     // console.log(pixabayApi);
     pixabayApi.fetchPhotos().then(data => {
-       console.log(data);
+        console.log(data);
+        if (!data.totalHits) {
+            Notiflix.Notify.failure("Sorry, there are no images matching your search query. Please try again.");
+        }
+        if (data.totalHits) {
+        Notiflix.Notify.success(`Hooray! We found ${data.totalHits} images.`);
+        }
         galleryEl.innerHTML = renderGallery(data.hits).join('');
         loadMoreBtnEl.classList.remove('is-hidden');
-
+        lightbox = new SimpleLightbox('.gallery .gallery-div a');
     }).catch(err => {
         console.log(err);
     });
@@ -54,16 +63,17 @@ function renderGallery(array) {
 onLoadMoreBtnClick = event => {
     // console.log('hello');
     pixabayApi.page += 1;
-     pixabayApi.fetchPhotos().then(data => {
-       
-         galleryEl.insertAdjacentHTML('beforeend', renderGallery(data.hits).join(''));
-         if (data.totalHits === pixabayApi.page) {
-             loadMoreBtnEl.classList.add('is-hidden');  
-         }
-        
-
+    pixabayApi.fetchPhotos().then(data => {
+    galleryEl.insertAdjacentHTML('beforeend', renderGallery(data.hits).join(''));
+    lightbox.refresh();
+    //  для перевірки => ns(92 totalHits)
+    if (Math.ceil(data.totalHits/40)  === pixabayApi.page) {
+     loadMoreBtnEl.classList.add('is-hidden');
+     Notiflix.Notify.warning(
+      "We're sorry, but you've reached the end of search results.") 
+        }
     }).catch(err => {
-        console.log(err);
+    console.log(err);
     });
 
 }
