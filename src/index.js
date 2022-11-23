@@ -110,7 +110,7 @@ const onLoadMoreBtnClick = async event => {
     galleryEl.insertAdjacentHTML('beforeend', renderGallery(data.hits).join(''));
     lightbox.refresh();
     //  для перевірки => ns(92 totalHits)
-    if (Math.ceil(data.totalHits/pixabayApi.per_page) === pixabayApi.page) {
+    if ((data.totalHits/pixabayApi.per_page) < pixabayApi.page) {
      loadMoreBtnEl.classList.add('is-hidden');
      Notiflix.Notify.warning(
       "We're sorry, but you've reached the end of search results.") 
