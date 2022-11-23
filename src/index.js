@@ -21,16 +21,21 @@ const onSearchFormSubmit = event => {
     // console.log(event.target.elements.searchQuery.value);
 
     // console.log(pixabayApi);
-    pixabayApi.fetchPhotos().then(data => {
-        console.log(data);
+    pixabayApi.fetchPhotos().then(response => {
+        const { data } = response;
+        console.log(response);  
         if (!data.totalHits) {
-            Notiflix.Notify.failure("Sorry, there are no images matching your search query. Please try again.");
+        Notiflix.Notify.failure("Sorry, there are no images matching your search query. Please try again.");
+        gallery.innerHTML = '';
+        return
         }
-        if (data.totalHits) {
+        if (Number(data.totalHits) > 40) {
+            // для перевірки => rw(5 totalHits)
+         loadMoreBtnEl.classList.remove('is-hidden');       
+        }
         Notiflix.Notify.success(`Hooray! We found ${data.totalHits} images.`);
-        }
         galleryEl.innerHTML = renderGallery(data.hits).join('');
-        loadMoreBtnEl.classList.remove('is-hidden');
+       
         lightbox = new SimpleLightbox('.gallery .gallery-div a');
     }).catch(err => {
         console.log(err);
@@ -63,7 +68,8 @@ function renderGallery(array) {
 onLoadMoreBtnClick = event => {
     // console.log('hello');
     pixabayApi.page += 1;
-    pixabayApi.fetchPhotos().then(data => {
+    pixabayApi.fetchPhotos().then(response => {
+    const { data } = response;
     galleryEl.insertAdjacentHTML('beforeend', renderGallery(data.hits).join(''));
     lightbox.refresh();
     //  для перевірки => ns(92 totalHits)
