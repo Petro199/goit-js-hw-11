@@ -27,7 +27,8 @@ const onSearchFormSubmit = async event => {
         console.log(response);  
         if (!data.totalHits) {
         Notiflix.Notify.failure("Sorry, there are no images matching your search query. Please try again.");
-        gallery.innerHTML = '';
+          galleryEl.innerHTML = '';
+          loadMoreBtnEl.classList.add('is-hidden');
         return
         }
         if (Number(data.totalHits) > 40) {
@@ -50,7 +51,7 @@ const onSearchFormSubmit = async event => {
     //     console.log(response);  
     //     if (!data.totalHits) {
     //     Notiflix.Notify.failure("Sorry, there are no images matching your search query. Please try again.");
-    //       gallery.innerHTML = '';
+    //       galleryEl.innerHTML = '';
     //       loadMoreBtnEl.classList.add('is-hidden');
     //     return
     //     }
