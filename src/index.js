@@ -34,7 +34,10 @@ const onSearchFormSubmit = async event => {
           loadMoreBtnEl.classList.add('is-hidden');
         return
         }
-    if (Number(data.totalHits) > pixabayApi.per_page) {
+    if (data.totalHits < pixabayApi.per_page) {
+       loadMoreBtnEl.classList.add('is-hidden');
+    }
+    if (data.totalHits > pixabayApi.per_page) {
           // console.log(per_page);
             // для перевірки => rw(5 totalHits)
          loadMoreBtnEl.classList.remove('is-hidden');       
