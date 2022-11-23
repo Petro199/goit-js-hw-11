@@ -107,14 +107,16 @@ const onLoadMoreBtnClick = async event => {
   try {
     const response = await pixabayApi.fetchPhotos();
      const { data } = response;
-    galleryEl.insertAdjacentHTML('beforeend', renderGallery(data.hits).join(''));
-    lightbox.refresh();
+   
     //  для перевірки => ns(92 totalHits)
     if (data.hits.length < pixabayApi.page) {
      loadMoreBtnEl.classList.add('is-hidden');
      Notiflix.Notify.warning(
-      "We're sorry, but you've reached the end of search results.") 
-        }
+       "We're sorry, but you've reached the end of search results.") 
+    }
+    galleryEl.insertAdjacentHTML('beforeend', renderGallery(data.hits).join(''));
+    lightbox.refresh();
+    
     } catch (err) {
         console.log(err);
     };
